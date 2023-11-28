@@ -60,7 +60,7 @@ export default function WebcamVideo({ countDown }: Props) {
       document.body.appendChild(a);
       //   a.style = "display: none";
       a.href = url;
-      a.download = "react-webcam-stream-capture.webm";
+      a.download = "react-webcam-stream-capture.mp4";
       a.click();
       window.URL.revokeObjectURL(url);
       setRecordedChunks([]);

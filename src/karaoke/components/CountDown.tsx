@@ -5,7 +5,7 @@ import { useShowCamera } from "../../hooks/useShowCamera";
 export const CountDown = () => {
   const { timeRemaining } = useCountdown(3);
   const videoRef = useRef(null);
-  const { onSetVideoRef } = useShowCamera(null);
+  // const { onSetVideoRef } = useShowCamera(null);
   const { nextPage } = useUiKaraoke();
   const images = [
     "./assets/images/num1.png",
@@ -19,7 +19,7 @@ export const CountDown = () => {
     }
   }, [timeRemaining]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     const startCamera = async () => {
       try {
         onSetVideoRef(videoRef);
@@ -28,11 +28,11 @@ export const CountDown = () => {
       }
     };
     startCamera();
-  }, []);
+  }, []); */
 
   return (
     <div>
-      <video
+     {/*  <video
         ref={videoRef}
         autoPlay
         playsInline
@@ -42,7 +42,7 @@ export const CountDown = () => {
           position: "absolute",
           objectFit: "fill",
         }}
-      />
+      /> */}
       {/* <img
         src="./assets/images/karolg.png"
         alt=""
@@ -55,7 +55,7 @@ export const CountDown = () => {
         }}
       /> */}
       <img
-        src="images/rdy.png"
+        src="./assets/images/rdy.png"
         alt=""
         style={{
           width: "69.92%",

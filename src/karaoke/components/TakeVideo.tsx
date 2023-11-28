@@ -8,10 +8,10 @@ import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 export const TakeVideo = () => {
   const { timeRemaining } = useCountdown(30);
   const videoRef = useRef(null);
-  const { onSetVideoRef } = useShowCamera(null);
+  // const { onSetVideoRef } = useShowCamera(null);
   const { selectdMusic } = useUiKaraoke();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const startCamera = async () => {
       try {
         onSetVideoRef(videoRef);
@@ -20,7 +20,7 @@ export const TakeVideo = () => {
       }
     };
     startCamera();
-  }, []);
+  }, []); */
 
 
   return (

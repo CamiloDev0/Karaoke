@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ILyrics } from "../../utils/types/lyrics.types";
 
 export type TSelectedMusic = "bonito" | "provenza";
 
@@ -6,6 +7,9 @@ export type TAudioUrl = {
     [key in TSelectedMusic]: string;
 };
 
+export type TLyricsMusic = {
+  [key in TSelectedMusic]: ILyrics[];
+}
 interface UiKaraoke {
   currentPage: number;
   selectdMusic: TSelectedMusic | null;

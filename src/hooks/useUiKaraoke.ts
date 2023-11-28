@@ -30,6 +30,7 @@ export const useUiKaraoke = () => {
     dispatch(onResetCurrentPage());
   };
 
+
   return {
     currentPage,
     selectdMusic,

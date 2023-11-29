@@ -1,43 +1,56 @@
-import { useEffect, useState } from 'react';
-import { ILyrics } from '../utils/types/lyrics.types';
+import { useEffect, useState } from "react";
+import { ILyrics } from "../utils/types/lyrics.types";
 
-export const useGetLettersKaraoke = (durations: ILyrics[]) => {
-	const [currentDurationIndex, setCurrentDurationIndex] = useState(0);
-	const [timeRemaining, setTimeRemaining] = useState(durations[0].durations);
-	const [stop, setStop] = useState(false);
-	useEffect(() => {
-		if (!stop /* || timeRemaining > 0 */) {
-			const intervalId = setInterval(() => {
-				/*  if (timeRemaining > 0) {
-          setTimeRemaining((s) => s - 1);
-        } else {
-          
-          
-        } */
+interface UseGetLettersKaraokeProps {
+  lyrics: ILyrics[];
+}
 
-				const nextIndex = (currentDurationIndex + 1) % durations.length;
-				if (nextIndex === durations.length - 1) setStop(true);
-				setCurrentDurationIndex(nextIndex);
-				setTimeRemaining(durations[nextIndex].durations);
-			}, timeRemaining * 1000);
+interface UseGetLettersKaraokeResult {
+  timeRemaining: number;
+  currentDuration: number;
+  percentage: number;
+  currentLyris: string;
+  nextLyrics: string;
+  previousLyris: string;
+}
 
-			return () => {
-				clearInterval(intervalId);
-			};
-		}
-	}, [timeRemaining, currentDurationIndex, durations]);
+export const useGetLettersKaraoke = ({
+  lyrics,
+}: UseGetLettersKaraokeProps): UseGetLettersKaraokeResult => {
+  const [currentLyric, setCurrentLyric] = useState(0);
+  const [currentDuration, setCurrentDuration] = useState(lyrics[0].durations);
+  const [stop, setStop] = useState(false);
+  const [previousLyris, setPreviousLyris] = useState<string>("");
+  const [nextLyrics, setNextLyrics] = useState(lyrics[1].lyrics);
 
-	return {
-		timeRemaining,
-		currentDuration: durations[currentDurationIndex].durations,
-		percentage:
-			(timeRemaining / durations[currentDurationIndex].durations) * 100,
-		currentLyris: durations[currentDurationIndex].lyrics,
-		previousLyris:
-			durations[
-				currentDurationIndex !== 0
-					? currentDurationIndex - 1
-					: currentDurationIndex
-			].lyrics,
-	};
+  useEffect(() => {
+    if (!stop) {
+      const intervalId = setInterval(() => {
+        setCurrentLyric((prevLyric) => {
+          const nextIndex = prevLyric + 1;
+          const countOfLyrics = lyrics.length - 1;
+          if (nextIndex === countOfLyrics) setStop(true);
+          setPreviousLyris(lyrics[prevLyric].lyrics);
+          setCurrentDuration(lyrics[nextIndex].durations);
+          setNextLyrics(
+            nextIndex === countOfLyrics ? "" : lyrics[nextIndex + 1].lyrics
+          );
+          return nextIndex;
+        });
+      }, currentDuration * 1000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [currentDuration, stop, lyrics]);
+
+  return {
+    timeRemaining: currentDuration,
+    currentDuration: lyrics[currentLyric].durations,
+    percentage: (currentDuration / lyrics[currentLyric].durations) * 100,
+    currentLyris: lyrics[currentLyric].lyrics,
+    nextLyrics,
+    previousLyris,
+  };
 };

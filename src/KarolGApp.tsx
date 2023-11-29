@@ -8,8 +8,7 @@ import { useMultiHardware } from "./hooks/useMultiHardware";
 import { NoMultiHardware } from "./modals/NoMultiHardware";
 
 export const KarolGApp = () => {
-  const { videoDevicesAllowed, audioDevicesAllowed } = useMultiHardware();
-
+  useMultiHardware();
   return (
     <div className="App">
       <StepsView>

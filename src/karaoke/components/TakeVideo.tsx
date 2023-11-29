@@ -35,7 +35,7 @@ export const TakeVideo = () => {
 						className='animateLyrics'
 						style={{
 							fontSize: '2rem',
-							color: '#FFFFFF',
+							color: '#FFFFFFCC',
 							fontWeight: 'normal',
 							width: '100%',
 							textAlign: 'center',
@@ -44,19 +44,21 @@ export const TakeVideo = () => {
 						{previousLyris}
 					</p>
 				)}
-				<p
-					key={currentLyris}
-					className='animateLyrics'
-					style={{
-						fontSize: '3rem',
-						color: '#FFFFFF',
-						fontWeight: 'bold',
-						width: '100%',
-						textAlign: 'center',
-					}}
-				>
-					{currentLyris}
-				</p>
+				{currentLyris && (
+					<p
+						key={currentLyris}
+						className='animateLyrics'
+						style={{
+							fontSize: '3rem',
+							color: '#FFFFFF',
+							fontWeight: 'bold',
+							width: '100%',
+							textAlign: 'center',
+						}}
+					>
+						{currentLyris}
+					</p>
+				)}
 			</div>
 			<img
 				src='./assets/images/marco.png'

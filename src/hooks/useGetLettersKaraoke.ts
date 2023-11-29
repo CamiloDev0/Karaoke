@@ -26,14 +26,7 @@ export const useGetLettersKaraoke = (durations: ILyrics[]) => {
 			};
 		}
 	}, [timeRemaining, currentDurationIndex, durations]);
-	console.log(
-		'durations[currentDurationIndex].lyrics',
-		durations[
-			currentDurationIndex !== 0
-				? currentDurationIndex - 1
-				: currentDurationIndex
-		].lyrics
-	);
+
 	return {
 		timeRemaining,
 		currentDuration: durations[currentDurationIndex].durations,

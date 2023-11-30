@@ -17,7 +17,7 @@ const videoConstraints = {
 const TYPE_LISTENER = "dataavailable";
 
 export default function Emergencia({ timeRemaining }: Props) {
-	const { nextPage } = useUiKaraoke();
+  const { nextPage } = useUiKaraoke();
 
   const videoRef = useRef(null);
   const {
@@ -53,6 +53,7 @@ export default function Emergencia({ timeRemaining }: Props) {
 
   return (
     <div
+      ref={videoRef}
       style={{
         width: "100%",
         height: "100%",
@@ -63,12 +64,11 @@ export default function Emergencia({ timeRemaining }: Props) {
       }}
     >
       <video
-        ref={videoRef}
         autoPlay
         playsInline
         style={{
-          width: "50%",
-          height: "50%",
+          width: "100%",
+          height: "100%",
           objectFit: "fill",
         }}
       />

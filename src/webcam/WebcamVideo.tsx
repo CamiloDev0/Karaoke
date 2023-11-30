@@ -7,8 +7,8 @@ interface Props {
 }
 
 const videoConstraints = {
-	width: 450,
-	height: 450,
+	width: 300,
+	height: 200,
 	facingMode: 'user',
 };
 
@@ -54,6 +54,7 @@ export default function WebcamVideo({ countDown }: Props) {
 				type: 'video/webm',
 			});
 			const url = URL.createObjectURL(blob);
+			console.log('url',url)
 			const a = document.createElement('a');
 			document.body.appendChild(a);
 			//   a.style = "display: none";

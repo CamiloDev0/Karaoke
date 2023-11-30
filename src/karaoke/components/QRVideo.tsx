@@ -19,7 +19,7 @@ export const QRVideo = () => {
         size={256}
         bgColor="rgba(255,255,255,0.7)"
         style={{ height: "auto", maxWidth: "100%", width: "30%", position:"absolute", zIndex:1, top:"54%", left:"35%" }}
-        value={`https://mocionws.info/downloadVideo.html?url=https://mocionws.info/video/${ qrVideoName }&name=Bancolombia-Karol-G`}
+        value={`https://mocionws.info/download.html?url=https://mocionws.info/video/${ qrVideoName }&name=Bancolombia-Karol-G`}
         viewBox={`0 0 256 256`}
       />
       <img

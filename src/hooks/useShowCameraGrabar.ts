@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUiKaraoke } from '../hooks/useUiKaraoke';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 
 export const useShowCameraGrabar = (
   videoRefProp: React.MutableRefObject<null> | null = null
@@ -65,6 +64,7 @@ export const useShowCameraGrabar = (
         if (!videoRef) return;
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
+          audio: true
         });
         const videoElement = videoRef.current;
         videoElement.srcObject = stream;
@@ -89,54 +89,45 @@ export const useShowCameraGrabar = (
 
 
   const handleDownload = async (callback?:()=>void) => {
-    /*if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, {
-        type: "video/webm",
-      });
-      const url = URL.createObjectURL(blob);
-      console.log("url", url);
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      //   a.style = "display: none";
-      a.href = url;
-      a.download = "react-webcam-stream-capture.mp4";
-      a.click();
-      window.URL.revokeObjectURL(url);
-      setRecordedChunks([]);
-      if(callback)callback()
-    }*/
+    // if (recordedChunks.length) {
+    //   const blob = new Blob(recordedChunks, {
+    //     type: "video/webm",
+    //   });
+    //   const url = URL.createObjectURL(blob);
+    //   console.log("url", url);
+    //   const a = document.createElement("a");
+    //   document.body.appendChild(a);
+    //   //   a.style = "display: none";
+    //   a.href = url;
+    //   a.download = "react-webcam-stream-capture.webm";
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   setRecordedChunks([]);
+    //   if(callback)callback()
+    // }
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
         type: 'video/webm',
       });
-      const fileName = generateUniqueId();
-      const data = new FormData();
-      data.append('videoFile', blob, fileName);
-      const _heads = {
-        'Content-Type': `multipart/form-data;`,
-      };
+      const arrayBuffer = await blob.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+
       try {
-        const res = await axios.post(
-          'https://mocionws.info/video.php',
-          data,
-          { headers: _heads }
-        );
-        console.log('UPLOAD VIDEO', res);
-        if (res.data !== 'error') {
-        	setVideoQRName(res.data);
-        	if(callback)callback();
-        }
+        const response = await axios.post('https://mocionws.info/upload.php', uint8Array, {
+          headers: {
+            'Content-Type': 'application/octet-stream',
+          },
+        });
+        console.log('Archivo guardado correctamente como mp4.', response.data);
+        if (response.data !== 'error') {
+          	setVideoQRName(response.data);
+          	if(callback)callback();
+          }
       } catch (error) {
-        console.log('ERROR UPLOAD VIDEO', error);
+        console.error('Error al guardar el archivo.', error);
       }
     }
   };
-
-  const generateUniqueId = () => {
-    const newUniqueId = uuidv4().slice(0, 6);
-    return newUniqueId;
-  };
-
 
   return {
     onSetVideoRef,

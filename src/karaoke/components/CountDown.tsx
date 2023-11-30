@@ -2,22 +2,24 @@ import { useEffect, useRef } from "react";
 import { useCountdown } from "../../hooks/useCountdown";
 import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 import { useShowCamera } from "../../hooks/useShowCamera";
+import { useShowCameraGrabar } from "../../hooks/useShowCameraGrabar";
 export const CountDown = () => {
-  const { timeRemaining } = useCountdown(3);
+  const { timeRemaining } = useCountdown(30);
   const videoRef = useRef(null);
-   const { onSetVideoRef } = useShowCamera(null);
+  const {
+    onSetVideoRef,
+    handleDownload,
+    startRecording,
+    stopRecording,
+    isRecording,
+    recordedChunks,
+  } = useShowCameraGrabar(null);
   const { nextPage } = useUiKaraoke();
   const images = [
     "./assets/images/num1.png",
     "./assets/images/num2.png",
     "./assets/images/num3.png",
   ];
-
-  useEffect(() => {
-    if (timeRemaining === 0) {
-      nextPage();
-    }
-  }, [timeRemaining]);
 
   useEffect(() => {
     const startCamera = async () => {
@@ -37,38 +39,23 @@ export const CountDown = () => {
         autoPlay
         playsInline
         style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
+          width: "50%",
+          height: "50%",
           objectFit: "fill",
         }}
       />
-      
-      <img
-        src="./assets/images/rdy.png"
-        alt=""
-        style={{
-          width: "69.92%",
-          height: "3.95%",
-          left: "15%",
-          top: "84.55%",
-          position: "absolute",
-        }}
-      />
-      <img
-        src="./assets/images/Exp_7.png"
-        alt=""
-        style={{ width: "100%", height: "100%", position: "absolute" }}
-      />
-      <div>
-        {timeRemaining > 0 && (
-          <img
-            src={images[timeRemaining - 1]}
-            alt={`Image ${timeRemaining + 1}`}
-            style={{ left: "40%", top: "30%", position: "absolute" }}
-          />
-        )}
-      </div>
+
+      <button onClick={startRecording}>
+        {isRecording ? "Stop Recording" : "Start Recording"}
+      </button>
+
+      <button onClick={stopRecording} disabled={!isRecording}>
+        Stop
+      </button>
+
+      <button onClick={handleDownload} disabled={recordedChunks.length === 0}>
+        Download Video
+      </button>
     </div>
   );
 };

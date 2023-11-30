@@ -53,7 +53,6 @@ export default function Emergencia({ timeRemaining }: Props) {
 
   return (
     <div
-      ref={videoRef}
       style={{
         width: "100%",
         height: "100%",
@@ -64,6 +63,7 @@ export default function Emergencia({ timeRemaining }: Props) {
       }}
     >
       <video
+        ref={videoRef}
         autoPlay
         playsInline
         style={{

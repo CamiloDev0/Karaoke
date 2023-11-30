@@ -3,13 +3,14 @@ import {
   onNextPage,
   onPassPage,
   onResetCurrentPage,
+  onSetQrVideoName,
   onSetSelectedMusic,
   useAppDispatch,
   useAppSelector,
 } from "../store";
 
 export const useUiKaraoke = () => {
-  const { currentPage, selectdMusic } = useAppSelector(
+  const { currentPage, selectdMusic, qrVideoName } = useAppSelector(
     (state) => state.uiKaraoke
   );
   const dispatch = useAppDispatch();
@@ -30,6 +31,9 @@ export const useUiKaraoke = () => {
     dispatch(onResetCurrentPage());
   };
 
+  const setVideoQRName = ( VideoName:string ) => {
+    dispatch(onSetQrVideoName(VideoName));
+  }
 
   return {
     currentPage,
@@ -38,5 +42,7 @@ export const useUiKaraoke = () => {
     passPage,
     setSelectedMusic,
     resetCurrnetPage,
+    setVideoQRName,
+    qrVideoName
   };
 };

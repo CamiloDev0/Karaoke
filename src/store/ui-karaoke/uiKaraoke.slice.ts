@@ -13,11 +13,13 @@ export type TLyricsMusic = {
 interface UiKaraoke {
   currentPage: number;
   selectdMusic: TSelectedMusic | null;
+  qrVideoName: string | null;
 }
 
 const initialState: UiKaraoke = {
   currentPage: 1,
   selectdMusic: null,
+  qrVideoName: null
 };
 export const uiKaraokeSlice = createSlice({
   name: "uiPage",
@@ -36,6 +38,9 @@ export const uiKaraokeSlice = createSlice({
       state.currentPage = 1;
       state.selectdMusic = null;
     },
+    onSetQrVideoName: (state, { payload }) =>{
+      state.qrVideoName = payload
+    }
   },
 });
 
@@ -45,4 +50,5 @@ export const {
   onPassPage,
   onSetSelectedMusic,
   onResetCurrentPage,
+  onSetQrVideoName
 } = uiKaraokeSlice.actions;

@@ -4,6 +4,7 @@ import { AudioUrl } from "../../utils/constants/audio-url";
 import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 import { useGetLettersKaraoke } from "../../hooks/useGetLettersKaraoke";
 import { lyricsByMusic } from "../../utils/constants/letters-music";
+import Emergencia from "../../Emergencia";
 export const TakeVideo = () => {
   const { selectdMusic } = useUiKaraoke();
   const { timeRemaining } = useCountdown(30);
@@ -14,7 +15,8 @@ export const TakeVideo = () => {
 
   return (
     <div>
-      <WebcamVideo countDown={timeRemaining} />
+      {/* <WebcamVideo countDown={timeRemaining} /> */}
+      <Emergencia timeRemaining={timeRemaining} />
       <div
         style={{
           width: "98%",

@@ -109,7 +109,7 @@ export default function WebcamVideo({ countDown }: Props) {
   useEffect(() => {
     if (countDown === 0) {
       handleStopCaptureClick();
-      setTimeout(uploadFileRequest, 5000);
+      uploadFileRequest();
     }
   }, [countDown, handleStopCaptureClick, handleDownload]);
 

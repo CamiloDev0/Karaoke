@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useUiKaraoke } from '../hooks/useUiKaraoke';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useShowCameraGrabar = (
   videoRefProp: React.MutableRefObject<null> | null = null
@@ -9,6 +12,7 @@ export const useShowCameraGrabar = (
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
+  const { setVideoQRName } = useUiKaraoke();
 
   const onSetVideoRef = (videoRef: React.MutableRefObject<any>) => {
     setVideoRef(videoRef);
@@ -84,8 +88,8 @@ export const useShowCameraGrabar = (
   }, [videoRefProp]);
 
 
-  const handleDownload = (callback?:()=>void) => {
-    if (recordedChunks.length) {
+  const handleDownload = async (callback?:()=>void) => {
+    /*if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
         type: "video/webm",
       });
@@ -100,7 +104,37 @@ export const useShowCameraGrabar = (
       window.URL.revokeObjectURL(url);
       setRecordedChunks([]);
       if(callback)callback()
+    }*/
+    if (recordedChunks.length) {
+      const blob = new Blob(recordedChunks, {
+        type: 'video/webm',
+      });
+      const fileName = generateUniqueId();
+      const data = new FormData();
+      data.append('videoFile', blob, fileName);
+      const _heads = {
+        'Content-Type': `multipart/form-data;`,
+      };
+      try {
+        const res = await axios.post(
+          'https://mocionws.info/video.php',
+          data,
+          { headers: _heads }
+        );
+        console.log('UPLOAD VIDEO', res);
+        if (res.data !== 'error') {
+        	setVideoQRName(res.data);
+        	if(callback)callback();
+        }
+      } catch (error) {
+        console.log('ERROR UPLOAD VIDEO', error);
+      }
     }
+  };
+
+  const generateUniqueId = () => {
+    const newUniqueId = uuidv4().slice(0, 6);
+    return newUniqueId;
   };
 
 

@@ -4,18 +4,32 @@ import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 import { useGetLettersKaraoke } from "../../hooks/useGetLettersKaraoke";
 import { lyricsByMusic } from "../../utils/constants/letters-music";
 import Emergencia from "../../Emergencia";
+import { useRef } from "react";
 export const TakeVideo = () => {
   const { selectdMusic } = useUiKaraoke();
-  const { timeRemaining } = useCountdown(22);
+  const { timeRemaining } = useCountdown(23);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const { currentLyris, previousLyris, nextLyrics } = useGetLettersKaraoke({
-    lyrics: lyricsByMusic[selectdMusic ?? "bonito"],
-  });
+  const { currentLyris, previousLyris, nextLyrics, stopLetters } =
+    useGetLettersKaraoke({
+      lyrics: lyricsByMusic[selectdMusic ?? "bonito"],
+    });
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
 
   return (
     <div>
       {/* <WebcamVideo countDown={timeRemaining} /> */}
-      <Emergencia timeRemaining={timeRemaining} />
+      <Emergencia
+        timeRemaining={timeRemaining}
+        stopLetters={stopLetters}
+        stopAudio={stopAudio}
+      />
       <div
         style={{
           width: "98%",
@@ -72,6 +86,22 @@ export const TakeVideo = () => {
             {nextLyrics}
           </p>
         )}
+        {previousLyris.length === 0 &&
+          currentLyris.length === 0 &&
+          nextLyrics.length === 0 && (
+            <p
+              key={currentLyris}
+              style={{
+                fontSize: "3rem",
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              Se está generando el video, esto tomará un momento
+            </p>
+          )}
       </div>
       <img
         src="./assets/images/marco.png"
@@ -79,7 +109,7 @@ export const TakeVideo = () => {
         style={{ width: "100%", height: "100%", position: "absolute" }}
       />
       {selectdMusic && (
-        <audio controls={false} autoPlay>
+        <audio ref={audioRef} controls={false} autoPlay>
           <source src={AudioUrl[selectdMusic]} type="audio/mp3" />
         </audio>
       )}

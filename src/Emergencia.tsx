@@ -4,9 +4,15 @@ import { useShowCameraGrabar } from "./hooks/useShowCameraGrabar";
 
 interface Props {
   timeRemaining: number;
+  stopAudio: () => void;
+  stopLetters: () => void;
 }
 
-export default function Emergencia({ timeRemaining }: Props) {
+export default function Emergencia({
+  timeRemaining,
+  stopLetters,
+  stopAudio,
+}: Props) {
   const { nextPage } = useUiKaraoke();
 
   const videoRef = useRef(null);
@@ -24,8 +30,12 @@ export default function Emergencia({ timeRemaining }: Props) {
 
   useEffect(() => {
     if (timeRemaining === 0) {
+      stopLetters();
+      stopAudio();
       stopRecording();
-      handleDownload(nextPage);
+      handleDownload(() => {
+        nextPage();
+      });
     }
   }, [timeRemaining, recordedChunks.length]);
 

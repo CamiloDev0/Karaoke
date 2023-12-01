@@ -14,7 +14,7 @@ export const useShowCameraGrabar = (
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const { setVideoQRName, currentPage } = useUiKaraoke();
-
+  const [isGeneratingVideo, setIsGeneratinVideo] = useState(false);
   const onSetVideoRef = (videoRef: React.MutableRefObject<any>) => {
     setVideoRef(videoRef);
   };
@@ -107,6 +107,7 @@ export const useShowCameraGrabar = (
     //   if(callback)callback()
     // }
     if (recordedChunks.length) {
+      setIsGeneratinVideo(true)
       const blob = new Blob(recordedChunks, {
         type: "video/webm",
       });
@@ -130,13 +131,14 @@ export const useShowCameraGrabar = (
           );
           setVideoQRName(response.data);
           if (callback) {
-            console.log('llamando en pagina',currentPage)
+            console.log("llamando en pagina", currentPage);
             callback();
           }
         }
       } catch (error) {
         console.error("Error al guardar el archivo.", error);
       }
+      setIsGeneratinVideo(false)
     }
   };
 
@@ -147,5 +149,6 @@ export const useShowCameraGrabar = (
     isRecording,
     recordedChunks,
     handleDownload,
+    isGeneratingVideo
   };
 };

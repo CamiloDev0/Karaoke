@@ -52,6 +52,7 @@ export default function Emergencia({ timeRemaining }: Props) {
       }}
     >
       <video
+        muted
         ref={videoRef}
         autoPlay
         playsInline

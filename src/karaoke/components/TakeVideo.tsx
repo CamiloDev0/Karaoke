@@ -4,22 +4,27 @@ import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 import { useGetLettersKaraoke } from "../../hooks/useGetLettersKaraoke";
 import { lyricsByMusic } from "../../utils/constants/letters-music";
 import Emergencia from "../../Emergencia";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+import ReactPlayer from "react-player";
+
 export const TakeVideo = () => {
   const { selectdMusic } = useUiKaraoke();
   const { timeRemaining } = useCountdown(23);
   const audioRef = useRef<HTMLAudioElement>(null);
-
+  const [playing, setPlaying] = useState(true);
   const { currentLyris, previousLyris, nextLyrics, stopLetters } =
     useGetLettersKaraoke({
       lyrics: lyricsByMusic[selectdMusic ?? "bonito"],
     });
 
+  console.log("audioRef.current", audioRef.current);
   const stopAudio = () => {
-    if (audioRef.current) {
+    /*  if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-    }
+    } */
+    setPlaying(false);
   };
 
   return (
@@ -108,11 +113,35 @@ export const TakeVideo = () => {
         alt=""
         style={{ width: "100%", height: "100%", position: "absolute" }}
       />
+      {/* {selectdMusic && (
+        <ReactPlayer
+          ref={audioRef}
+          src={AudioUrl[selectdMusic]}
+          autoPlay
+          controls={false}
+          volume={1.0}
+          
+        />
+      )} */}
       {selectdMusic && (
+        <ReactPlayer
+          volume={1.0}
+          height={""}
+          ref={audioRef}
+          url={AudioUrl[selectdMusic]}
+          autoPlay
+          controls
+          playing={playing}
+          onPause={() => {
+            setPlaying(false);
+          }}
+        />
+      )}
+      {/* {selectdMusic && (
         <audio ref={audioRef} controls={false} autoPlay>
           <source src={AudioUrl[selectdMusic]} type="audio/mp3" />
         </audio>
-      )}
+      )} */}
     </div>
   );
 };

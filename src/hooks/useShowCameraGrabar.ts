@@ -89,24 +89,25 @@ export const useShowCameraGrabar = (
     }
   }, [videoRefProp]);
 
+
+  
   const handleDownload = async (callback?: () => void) => {
-     if (recordedChunks.length) {
-       const blob = new Blob(recordedChunks, {
-         type: "video/webm",
-       });
-       const url = URL.createObjectURL(blob);
-       console.log("url", url);
-       const a = document.createElement("a");
-       document.body.appendChild(a);
-       //   a.style = "display: none";
-       a.href = url;
-       a.download = "react-webcam-stream-capture.webm";
-       a.click();
-       window.URL.revokeObjectURL(url);
-       setRecordedChunks([]);
-       setVideoQRName('fefebfewbfuewbfuebfuebwf')
-       if(callback)callback()
-     }
+    if (recordedChunks.length) {
+      const blob = new Blob(recordedChunks, {
+        type: "video/webm",
+      });
+      const url = URL.createObjectURL(blob);
+      console.log("url", url);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      //   a.style = "display: none";
+      a.href = url;
+      a.download = "react-webcam-stream-capture.mp4";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      setRecordedChunks([]);
+      if(callback)callback()
+    }
     /* if (recordedChunks.length) {
       setIsGeneratinVideo(true)
       const blob = new Blob(recordedChunks, {

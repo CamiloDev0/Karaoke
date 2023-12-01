@@ -1,5 +1,4 @@
 import { useCountdown } from "../../hooks/useCountdown";
-import WebcamVideo from "../../webcam/WebcamVideo";
 import { AudioUrl } from "../../utils/constants/audio-url";
 import { useUiKaraoke } from "../../hooks/useUiKaraoke";
 import { useGetLettersKaraoke } from "../../hooks/useGetLettersKaraoke";
@@ -7,7 +6,7 @@ import { lyricsByMusic } from "../../utils/constants/letters-music";
 import Emergencia from "../../Emergencia";
 export const TakeVideo = () => {
   const { selectdMusic } = useUiKaraoke();
-  const { timeRemaining } = useCountdown(30);
+  const { timeRemaining } = useCountdown(22);
 
   const { currentLyris, previousLyris, nextLyrics } = useGetLettersKaraoke({
     lyrics: lyricsByMusic[selectdMusic ?? "bonito"],

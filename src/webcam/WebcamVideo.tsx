@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
-import Webcam from 'react-webcam';
-import { useUiKaraoke } from '../hooks/useUiKaraoke';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+/* import { useRef, useState, useEffect } from "react";
+import Webcam from "react-webcam";
+import { useUiKaraoke } from "../hooks/useUiKaraoke";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   countDown: number;
@@ -11,22 +11,21 @@ interface Props {
 const videoConstraints = {
   width: 450,
   height: 450,
-  facingMode: 'user',
+  facingMode: "user",
 };
 
-const TYPE_LISTENER = 'dataavailable';
+const TYPE_LISTENER = "dataavailable";
 
 export default function WebcamVideo({ countDown }: Props) {
   const { nextPage, setVideoQRName } = useUiKaraoke();
   const webcamRef = useRef<Webcam>(null);
-  const mediaRecorderRef: React.MutableRefObject<MediaRecorder | null> = useRef(
-    null
-  );
+  const mediaRecorderRef: React.MutableRefObject<MediaRecorder | null> =
+    useRef(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
 
   const handleDataAvailable = ({
     data,
-  }: MediaRecorderEventMap['dataavailable']) => {
+  }: MediaRecorderEventMap["dataavailable"]) => {
     if (data.size > 0) {
       setRecordedChunks((prev) => prev.concat(data));
     }
@@ -35,7 +34,7 @@ export default function WebcamVideo({ countDown }: Props) {
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-        mimeType: 'video/webm',
+        mimeType: "video/webm",
       });
       mediaRecorderRef.current.addEventListener(
         TYPE_LISTENER,
@@ -54,14 +53,14 @@ export default function WebcamVideo({ countDown }: Props) {
   const handleDownload = () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: 'video/webm',
+        type: "video/webm",
       });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       document.body.appendChild(a);
       //   a.style = "display: none";
       a.href = url;
-      a.download = 'react-webcam-stream-capture.mp4';
+      a.download = "react-webcam-stream-capture.mp4";
       a.click();
       window.URL.revokeObjectURL(url);
       setRecordedChunks([]);
@@ -72,27 +71,25 @@ export default function WebcamVideo({ countDown }: Props) {
   const uploadFileRequest = async () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: 'video/webm',
+        type: "video/webm",
       });
       const fileName = generateUniqueId();
       const data = new FormData();
-      data.append('videoFile', blob, fileName);
+      data.append("videoFile", blob, fileName);
       const _heads = {
-        'Content-Type': `multipart/form-data;`,
+        "Content-Type": `multipart/form-data;`,
       };
       try {
-        const res = await axios.post(
-          'https://mocionws.info/video.php',
-          data,
-          { headers: _heads }
-        );
-        console.log('UPLOAD VIDEO', res);
-        if (res.data !== 'error') {
-        	setVideoQRName(res.data);
-        	nextPage();
+        const res = await axios.post("https://mocionws.info/video.php", data, {
+          headers: _heads,
+        });
+        console.log("UPLOAD VIDEO", res);
+        if (res.data !== "error") {
+          setVideoQRName(res.data);
+          nextPage();
         }
       } catch (error) {
-        console.log('ERROR UPLOAD VIDEO', error);
+        console.log("ERROR UPLOAD VIDEO", error);
       }
     }
   };
@@ -116,18 +113,18 @@ export default function WebcamVideo({ countDown }: Props) {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: '0px',
-        left: '0px',
-        overflow: 'hidden',
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: "0px",
+        left: "0px",
+        overflow: "hidden",
       }}
     >
       <Webcam
-        width={'100%'}
-        height={'100%'}
-        style={{ objectFit: 'fill' }}
+        width={"100%"}
+        height={"100%"}
+        style={{ objectFit: "fill" }}
         audio
         ref={webcamRef}
         videoConstraints={videoConstraints}
@@ -136,3 +133,4 @@ export default function WebcamVideo({ countDown }: Props) {
     </div>
   );
 }
+ */

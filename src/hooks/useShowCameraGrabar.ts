@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useUiKaraoke } from '../hooks/useUiKaraoke';
-import axios from 'axios';
+import { useUiKaraoke } from "../hooks/useUiKaraoke";
+import axios from "axios";
 
 export const useShowCameraGrabar = (
   videoRefProp: React.MutableRefObject<null> | null = null
@@ -8,10 +8,12 @@ export const useShowCameraGrabar = (
   const [videoRef, setVideoRef] = useState<React.MutableRefObject<any> | null>(
     null
   );
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
-  const { setVideoQRName } = useUiKaraoke();
+  const { setVideoQRName, currentPage } = useUiKaraoke();
 
   const onSetVideoRef = (videoRef: React.MutableRefObject<any>) => {
     setVideoRef(videoRef);
@@ -21,7 +23,7 @@ export const useShowCameraGrabar = (
     if (videoRef?.current) {
       const constraints = {
         video: true,
-        audio: true, 
+        audio: true,
       };
 
       navigator.mediaDevices
@@ -64,7 +66,7 @@ export const useShowCameraGrabar = (
         if (!videoRef) return;
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
-          audio: true
+          audio: true,
         });
         const videoElement = videoRef.current;
         videoElement.srcObject = stream;
@@ -87,8 +89,7 @@ export const useShowCameraGrabar = (
     }
   }, [videoRefProp]);
 
-
-  const handleDownload = async (callback?:()=>void) => {
+  const handleDownload = async (callback?: () => void) => {
     // if (recordedChunks.length) {
     //   const blob = new Blob(recordedChunks, {
     //     type: "video/webm",
@@ -107,24 +108,34 @@ export const useShowCameraGrabar = (
     // }
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: 'video/webm',
+        type: "video/webm",
       });
       const arrayBuffer = await blob.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
 
       try {
-        const response = await axios.post('https://mocionws.info/upload.php', uint8Array, {
-          headers: {
-            'Content-Type': 'application/octet-stream',
-          },
-        });
-        console.log('Archivo guardado correctamente como mp4.', response.data);
-        if (response.data !== 'error') {
-          	setVideoQRName(response.data);
-          	if(callback)callback();
+        const response = await axios.post(
+          "https://mocionws.info/upload.php",
+          uint8Array,
+          {
+            headers: {
+              "Content-Type": "application/octet-stream",
+            },
           }
+        );
+        if (response.data !== "error") {
+          console.log(
+            "Archivo guardado correctamente como mp4.",
+            response.data
+          );
+          setVideoQRName(response.data);
+          if (callback) {
+            console.log('llamando en pagina',currentPage)
+            callback();
+          }
+        }
       } catch (error) {
-        console.error('Error al guardar el archivo.', error);
+        console.error("Error al guardar el archivo.", error);
       }
     }
   };
@@ -135,6 +146,6 @@ export const useShowCameraGrabar = (
     stopRecording,
     isRecording,
     recordedChunks,
-    handleDownload
+    handleDownload,
   };
 };

@@ -6,7 +6,6 @@ import QRCode from "react-qr-code";
 export const QRVideo = () => {
   const { timeRemaining } = useCountdown(60);
   const { resetCurrnetPage, qrVideoName } = useUiKaraoke();
-  console.log("VIDEO NAME VIEW QR", qrVideoName);
   useEffect(() => {
     if (timeRemaining === 0) {
       resetCurrnetPage();

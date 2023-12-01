@@ -1,20 +1,10 @@
-import { useRef, useState, useEffect } from "react";
-import Webcam from "react-webcam";
-import { useCountdown } from "./hooks/useCountdown";
+import { useRef, useEffect } from "react";
 import { useUiKaraoke } from "./hooks/useUiKaraoke";
 import { useShowCameraGrabar } from "./hooks/useShowCameraGrabar";
 
 interface Props {
   timeRemaining: number;
 }
-
-const videoConstraints = {
-  width: 1280,
-  height: 720,
-  facingMode: "user",
-};
-
-const TYPE_LISTENER = "dataavailable";
 
 export default function Emergencia({ timeRemaining }: Props) {
   const { nextPage } = useUiKaraoke();
@@ -25,7 +15,6 @@ export default function Emergencia({ timeRemaining }: Props) {
     handleDownload,
     startRecording,
     stopRecording,
-    isRecording,
     recordedChunks,
   } = useShowCameraGrabar(null);
 
@@ -38,7 +27,7 @@ export default function Emergencia({ timeRemaining }: Props) {
       stopRecording();
       handleDownload(nextPage);
     }
-  }, [timeRemaining, handleDownload]);
+  }, [timeRemaining, recordedChunks.length]);
 
   useEffect(() => {
     const startCamera = async () => {
